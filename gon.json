@@ -1,0 +1,13 @@
+{
+  "source" : ["./release/darwin/gtmhub"],
+  "bundle_id" : "com.gtmhub.gtmhub",
+  "apple_id": {
+    "password":  "@env:AC_PASSWORD"
+  },
+  "sign" :{
+    "application_identity" : "Developer ID Application: GTMHUB OOD"
+  },
+  "zip" :{
+    "output_path" : "./release/darwin/gtmhub_macos.zip"
+  }
+}
