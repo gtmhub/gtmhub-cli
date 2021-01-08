@@ -9,12 +9,6 @@ import (
 	"net/url"
 )
 
-//var (
-//	getListsUrl = fmt.Sprintf("%s/api/v1/lists", gtmhubBaseUrl)
-//	loadListUrl = fmt.Sprintf("%s/api/v1/lists",gtmhubBaseUrl)
-//	loadListFmt = loadListUrl + "/%s/load"
-//)
-
 var (
 	listsBaseUrlFmt = "%s/api/v1/lists"
 	loadListsFmt    = listsBaseUrlFmt + "/%s/load"
@@ -30,8 +24,6 @@ func (ghc GtmhubHttpClient) LoadList(list model.ListResponse) ([]map[string]inte
 		}}
 
 	bodyR, _ := json.Marshal(requestBody)
-
-	//fmt.Printf(string(bodyR))
 
 	body, err := executeRequest(url, http.MethodPost, bodyR)
 	var response map[string]interface{}
@@ -53,6 +45,11 @@ func (ghc GtmhubHttpClient) LoadList(list model.ListResponse) ([]map[string]inte
 	}
 
 	return result, nil
+}
+
+func (ghc GtmhubHttpClient) GetAllLists() (model.FullListResponse, error) {
+	filter := "{listType:\"Key Result\"}"
+	return getListsByFilter(filter, ghc)
 }
 
 func (ghc GtmhubHttpClient) GetListsByName(listName string) (model.FullListResponse, error) {
@@ -82,50 +79,3 @@ func getListsByFilter(filter string, ghc GtmhubHttpClient) (model.FullListRespon
 	return response, nil
 
 }
-
-//func (ghc GtmhubHttpClient) LoadList(lName string) (model.KRListFullResponse, error) {
-//	listId, err := GetListID(lName)
-//	if err != nil {
-//		return model.KRListFullResponse{}, err
-//	}
-//
-//	loadListFmt := fmt.Sprintf(loadListsFmt, config.GetGtmhubUrl(), listId)
-//
-//
-//	body, err := executeRequest(fmt.Sprintf(loadListFmt, listId), http.MethodGet, nil)
-//
-//	if err != nil {
-//		return model.KRListFullResponse{}, err
-//	}
-//
-//	var resp model.KRListFullResponse
-//	json.Unmarshal(body, &resp)
-//
-//	return resp, nil
-//
-//
-//}
-//
-//func GetListID(lName string) (string, error) {
-//	query := ""
-//	if len(lName) > 0 {
-//		query = fmt.Sprintf("{\"title\":\"%s\"}", lName)
-//		query = url.QueryEscape(query)
-//		query = "?filter=" + query
-//	}
-//
-//	getListsUrl := fmt.Sprintf(listsBaseUrlFmt, config.GetGtmhubUrl())
-//
-//	body, err := executeRequest(fmt.Sprintf("%s%s", getListsUrl, query), http.MethodGet, nil)
-//
-//	if err != nil {
-//		return "", err
-//	}
-//
-//	var resp model.ListFullResponse
-//	json.Unmarshal(body, &resp)
-//	if len(resp.Items) > 0 {
-//		return resp.Items[0].ID, nil
-//	}
-//	return "", fmt.Errorf("no lists found")
-//}

@@ -10,8 +10,6 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-// go build -ldflags="-X main.major=0 -X main.minor=1 -X main.patch=2398" -o gtmhub
-
 var major, minor, patch string
 
 func main() {
@@ -30,10 +28,9 @@ func main() {
 		Commands: []*cli.Command{
 			commands.LoginCommand,
 			commands.LogoutCommand,
-			commands.ShowCommand,
 			commands.StatusCommand,
 			commands.UpdateCommand,
-			commands.ListCommand,
+			commands.GetCommand,
 		},
 		Flags: []cli.Flag{
 			cli.VersionFlag,

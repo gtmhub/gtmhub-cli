@@ -6,12 +6,13 @@ import (
 	"gtmhub-cli/output"
 	"os"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/urfave/cli/v2"
 )
 
 var (
 	ListCommand = &cli.Command{
-		Name:  "list",
+		Name:  "lists",
 		Usage: "displays a kr list defined in gtmhub.",
 		Action: ListAction,
 		Flags: []cli.Flag{
@@ -35,48 +36,59 @@ func ListAction(c *cli.Context) error {
 	var err error
 	listName := c.String("name")
 	id := c.String("id")
+	var selectedList *model.ListResponse
 	if len(id) > 0 {
 		response, err = client.GetListsByID(id)
 	} else if len(listName) > 0 {
 		response, err = client.GetListsByName(listName)
-	}
+	} else {
+		model := interactiveListSelector{}
+		p := tea.NewProgram(&model)
 
-	if err != nil {
-		return err
-	}
-
-	lists := response.Items
-
-	if len(lists) == 0 {
-		output.Print(listQueryNoItemsMsg)
-		os.Exit(0)
-	}
-
-	if len(lists) > 1 {
-		output.Print(tooMuchListsMsg)
-		fmt.Println()
-		for _, list := range lists {
-			output.Print(fmt.Sprintf(tooMuchListsEnumMsgFmt, list.ID, list.Title))
+		if errP := p.Start(); errP != nil {
+			fmt.Printf(errP.Error())
+			os.Exit(1)
 		}
 
-		os.Exit(0)
+		if model.selectedList == nil {
+			err = fmt.Errorf("no list selected")
+		} else {
+			selectedList = model.selectedList
+		}
 	}
 
-	result, err := client.LoadList(lists[0])
+	if err != nil {
+		return err
+	}
+	if selectedList == nil {
+		lists := response.Items
+
+		if len(lists) == 0 {
+			output.Print(listQueryNoItemsMsg)
+			os.Exit(0)
+		}
+
+		if len(lists) > 1 {
+			output.Print(tooMuchListsMsg)
+			fmt.Println()
+			for _, list := range lists {
+				output.Print(fmt.Sprintf(tooMuchListsEnumMsgFmt, list.ID, list.Title))
+			}
+
+			os.Exit(0)
+		}
+
+		selectedList = &lists[0]
+	}
+
+
+
+	result, err := client.LoadList(*selectedList)
 	if err != nil {
 		return err
 	}
 
-	output.PrintKrsFromList(lists[0].Columns, result)
+	output.PrintKrsFromList((*selectedList).Columns, result)
 
 	return nil
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//for _, res := range result.Items {
-	//	log.Println(fmt.Sprintf("ID:  %s  |  Name:  %s  |  Attainmenet:  %d", res.ID, res.Name, res.Attainmenet))
-	//}
-
-	//return fmt.Errorf("not implemented")
 }

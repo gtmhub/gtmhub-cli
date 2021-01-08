@@ -42,9 +42,6 @@ func (c *Client) PoolForToken(deviceCode DeviceFlowInitResponse) (AccessCodeResp
 
 		body, _ := ioutil.ReadAll(res.Body)
 
-		//fmt.Println(res)
-		//fmt.Println(string(body))
-
 		var resp AccessCodeResponse
 		json.Unmarshal([]byte(body), &resp)
 
