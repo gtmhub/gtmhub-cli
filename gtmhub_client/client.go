@@ -11,10 +11,6 @@ import (
 	"time"
 )
 
-//const(
-//	gtmhubBaseUrl = "https://app.gtmhub.com"
-//)
-
 type GtmhubHttpClient struct{
 
 }
@@ -37,9 +33,6 @@ func executeRequest(url, method string, body []byte) ([]byte, error){
 		defer res.Body.Close()
 
 		if res.StatusCode == http.StatusUnauthorized {
-			//// token expired, use the refresh token
-			//// todo: implement it
-			//return nil, fmt.Errorf("token expired")
 			breaker++
 			authClient, err := auth.GetClient()
 			if err != nil {
@@ -54,13 +47,8 @@ func executeRequest(url, method string, body []byte) ([]byte, error){
 		}
 		bodyResp, _ := ioutil.ReadAll(res.Body)
 		if res.StatusCode > 300 {
-			fmt.Println(string(bodyResp))
-			return nil, fmt.Errorf("something is not quite right")
+			return nil, fmt.Errorf("something is not quite right. err: %s", string(bodyResp))
 		}
-
-		//bodyResp, _ := ioutil.ReadAll(res.Body)
-
-		//fmt.Println(string(bodyResp))
 
 		return bodyResp, nil
 	}

@@ -18,7 +18,12 @@ func PrintKrsFromList(columns []model.ListColumn, data []map[string]interface{})
 	for _, metric := range data {
 		dataRow := table.Row{metric["id"]}
 		for _, column := range columns {
-			dataRow = append(dataRow, metric[column.FieldName])
+			dataFromRow, found := metric[column.FieldName]
+			if found {
+				dataRow = append(dataRow, dataFromRow)
+			} else {
+				dataRow = append(dataRow, "not specified")
+			}
 		}
 		t.AppendRow(dataRow)
 	}

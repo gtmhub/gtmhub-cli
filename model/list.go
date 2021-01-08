@@ -32,7 +32,7 @@ type DynamicFilter struct {
 type RuleBound struct {
 	FieldName      string          `json:"fieldName"`
 	Operator       string          `json:"operator"`
-	Value          []string        `json:"value"`
+	Value          interface{}       `json:"value"`
 	CustomField    bool            `json:"customField"`
 	DynamicFilters []DynamicFilter `json:"dynamicFilters"`
 }

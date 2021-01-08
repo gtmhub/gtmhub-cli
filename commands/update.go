@@ -83,9 +83,6 @@ func getIdInteractively() string {
 	model := interactiveMetrics{}
 	p := tea.NewProgram(&model)
 
-	//p.EnterAltScreen()
-	//defer p.ExitAltScreen()
-
 	if err := p.Start(); err != nil {
 		fmt.Printf(err.Error())
 		os.Exit(1)

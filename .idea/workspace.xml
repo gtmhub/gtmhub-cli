@@ -2,8 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2f815fd-d1c9-45dc-9ab7-04bf2f946f89" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/make-binaries.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/make-binaries.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gtmhub-cli/templates/gtmhub-cli.rb" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/commands/get.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commands/interactive_list_selector.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commands/krs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth/device_code.go" beforeDir="false" afterPath="$PROJECT_DIR$/auth/device_code.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commands/common.go" beforeDir="false" afterPath="$PROJECT_DIR$/commands/common.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commands/list.go" beforeDir="false" afterPath="$PROJECT_DIR$/commands/list.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commands/show.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/commands/update.go" beforeDir="false" afterPath="$PROJECT_DIR$/commands/update.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gtmhub_client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/gtmhub_client/client.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gtmhub_client/lists.go" beforeDir="false" afterPath="$PROJECT_DIR$/gtmhub_client/lists.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gtmhub_client/sessions.go" beforeDir="false" afterPath="$PROJECT_DIR$/gtmhub_client/sessions.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/list.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/list.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/lists.go" beforeDir="false" afterPath="$PROJECT_DIR$/output/lists.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +51,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../petarpetkov/update-homebrew-formula" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -50,7 +63,7 @@
       <module name="gtmhub-cli" />
       <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
-      <parameters value="show krs" />
+      <parameters value="get list " />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/main.go" />
       <package value="gtmhub-cli" />
@@ -80,11 +93,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/gtmhub_client/lists.go</url>
-          <line>94</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/commands/login.go</url>
           <line>76</line>
@@ -122,8 +130,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/gtmhub_client/client.go</url>
-          <line>57</line>
+          <line>49</line>
           <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/gtmhub_client/client.go</url>
+          <line>18</line>
+          <option name="timeStamp" value="40" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

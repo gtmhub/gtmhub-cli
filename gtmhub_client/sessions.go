@@ -16,11 +16,6 @@ func (ghc GtmhubHttpClient) GetActiveSessionsIDs() (model.IDResponses, error) {
 
 	sessionStatus := "open"
 	timeFrameFilter := "current"
-	//timeFrame := time.Now().UTC()
-	//
-	//query := fmt.Sprintf("{start:{$lt:ISODate('%s')}, end:{&gt:ISODate('%s')}, status:%s}", timeFrame.String(), timeFrame.String(), sessionStatus)
-	//query = url.QueryEscape(query)
-	//query = "?filter=" + query
 
 	query := fmt.Sprintf("filter=%s&status=%s", timeFrameFilter, sessionStatus)
 	query = "?" + query

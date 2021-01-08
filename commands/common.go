@@ -10,7 +10,6 @@ var (
 	client gtmhub_client.GtmhubHttpClient
 )
 
-// messages
 var(
 	logoutMsg = "You have succesfully logged out. Be quick and log back again!"
 	authorizationRequestMsgFmt = "Please open your browser and navigate to: %s then enter the following code %s"
@@ -31,15 +30,11 @@ Or maybe just pat yourself on the back for a job well done :beer:`
 
 func getClaimFromToken(idtoken string, lKey string) string {
 	claims := jwt.MapClaims{}
-	//jwt.ParseWithClaims(idtoken, claims, func(token *jwt.Token) (interface{}, error) {
-	//	return []byte("<YOUR VERIFICATION KEY>"), nil
-	//})
 
 	jwt.ParseWithClaims(idtoken, claims, nil)
 
 	// ... error handling
 
-	// do something with decoded claims
 	for key, val := range claims {
 		if key == lKey {
 			return val.(string)
