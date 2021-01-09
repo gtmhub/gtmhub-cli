@@ -119,4 +119,11 @@ jobs:
           asset_path: release/darwin/gtmhub_macos.zip
           asset_name: gtmhub_macos.zip
           asset_content_type: application/zip
+      - name: Update homebrew formula
+        uses: docker://scorpias/update-homebrew-formula-action:latest
+        with:
+          packageName: "gtmhub-cli"
+          accessToken: ${{ secrets.HOMEBREW_UPDATE_TOKEN }}
+          tapRepo: "gtmhub/homebrew-gtmhub"
+          srcRepo: "gtmhub/gtmhub-cli"
 
