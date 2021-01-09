@@ -128,6 +128,7 @@ jobs:
         with:
           packageName: "gtmhub-cli"
           accessToken: ${{ secrets.HOMEBREW_UPDATE_TOKEN }}
+          userName: ${{ secrets.HOMEBREW_UPDATE_USERNAME }}
           tapRepo: "gtmhub/homebrew-gtmhub"
           srcRepo: "gtmhub/gtmhub-cli"
 
