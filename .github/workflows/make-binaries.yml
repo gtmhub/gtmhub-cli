@@ -119,6 +119,10 @@ jobs:
           asset_path: release/darwin/gtmhub_macos.zip
           asset_name: gtmhub_macos.zip
           asset_content_type: application/zip
+  update-artifacts:
+    runs-on: "ubuntu-latest"
+    needs: [release]
+    steps:
       - name: Update homebrew formula
         uses: docker://scorpias/update-homebrew-formula-action:latest
         with:
