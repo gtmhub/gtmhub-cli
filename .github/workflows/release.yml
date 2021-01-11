@@ -1,33 +1,15 @@
-name: Go
+name: Release
 
 on:
-  push:
-    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to release
+        required: true
 
 jobs:
-  calculate-version:
-    runs-on: ubuntu-latest
-    outputs:
-      semVer: ${{ steps.gitversion.outputs.semVer }}
-      major: ${{ steps.gitversion.outputs.major }}
-      minor: ${{ steps.gitversion.outputs.minor }}
-      patch: ${{ steps.gitversion.outputs.patch }}
-    steps:
-      - uses: actions/checkout@v2
-        name: Checkout
-        with:
-          fetch-depth: 0
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.7
-        with:
-          versionSpec: '5.5.0'
-      - name: Determine Version
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.7
-
   build:
     runs-on: ubuntu-latest
-    needs: calculate-version
     steps:
     - uses: actions/checkout@v2
       name: Checkout
@@ -36,14 +18,14 @@ jobs:
       with:
         go-version: 1.15
     - name: Build
-      run: make build MAJOR=${{ needs.calculate-version.outputs.major }} MINOR=${{ needs.calculate-version.outputs.minor }} PATCH=${{ needs.calculate-version.outputs.patch }}
+      run: make build VERSION=${{ github.event.inputs.version }}
     - name: upload binary artifacts
       uses: actions/upload-artifact@v2
       with:
         name: binaries
         path: release/
   release:
-    needs: [build, calculate-version]
+    needs: [build]
     runs-on: macos-latest
     steps:
       - name: Checkout
@@ -84,8 +66,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ needs.calculate-version.outputs.semVer }}
-          release_name: v${{ needs.calculate-version.outputs.semVer }}
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: v${{ github.event.inputs.version }}
           draft: false
           prerelease: false
 
@@ -119,7 +101,7 @@ jobs:
           asset_path: release/darwin/gtmhub_macos.zip
           asset_name: gtmhub_macos.zip
           asset_content_type: application/zip
-  update-artifacts:
+  update-homebrew:
     runs-on: "ubuntu-latest"
     needs: [release]
     steps:
@@ -131,4 +113,15 @@ jobs:
           userName: ${{ secrets.HOMEBREW_UPDATE_USERNAME }}
           tapRepo: "gtmhub/homebrew-gtmhub"
           srcRepo: "gtmhub/gtmhub-cli"
+  generate-release-notes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+          check-latest: true
+      - run: npm install github-release-notes -g
+      - run: gren release --token=${{ secrets.GITHUB_TOKEN }} --override
 
