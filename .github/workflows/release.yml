@@ -115,6 +115,7 @@ jobs:
           srcRepo: "gtmhub/gtmhub-cli"
   generate-release-notes:
     runs-on: ubuntu-latest
+    needs: [release]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
