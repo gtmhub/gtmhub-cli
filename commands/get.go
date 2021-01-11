@@ -6,7 +6,6 @@ var (
 	GetCommand = &cli.Command{
 		Name:  "get",
 		Usage: "gets you items from gtmhub",
-		Action: ListAction,
 		Subcommands: []*cli.Command{
 			ListCommand,
 			KRsCommand,
