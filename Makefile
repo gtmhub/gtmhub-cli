@@ -1,7 +1,11 @@
 BINARY := gtmhub
-MAJOR = 0
-MINOR = 0
-PATCH = 0
+
+VERSION = 0.1.0
+VERSIONSPLIT = $(word $2,$(subst ., ,$(VERSION)))
+
+MAJOR = $(call VERSIONSPLIT,$*,1)
+MINOR = $(call VERSIONSPLIT,$*,2)
+PATCH = $(call VERSIONSPLIT,$*,3)
 
 .PHONY: windows
 windows:
