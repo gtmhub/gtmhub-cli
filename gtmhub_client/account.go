@@ -9,19 +9,19 @@ import (
 )
 
 var (
-	accountUrlFmt = "%s/api/v1/accounts"
+	accountUrlFmt = "%s/api/v1/users/app/%s"
 )
 
-func (ghc GtmhubHttpClient) GetAccountDomain() (string, error) {
-	accountUrl := fmt.Sprintf(accountUrlFmt, config.GetGtmhubUrl())
-	url := fmt.Sprintf("%s/%s",accountUrl, config.GetAccountId())
-	body, err := executeRequest(url, http.MethodGet, nil)
+func (ghc GtmhubHttpClient) ResolveAccount(auth0UserId string) (model.AccountResolveResponse, error) {
+	accountUrl := fmt.Sprintf(accountUrlFmt, config.GetGtmhubUrl(), auth0UserId)
+	//url := fmt.Sprintf("%s/%s",accountUrl, config.GetAccountId())
+	body, err := executeGlobalRequest(accountUrl, http.MethodGet, nil)
 	if err != nil {
-		return "", err
+		return model.AccountResolveResponse{}, err
 	}
 
-	var accResponse model.AccountResponse
+	var accResponse model.AccountResolveResponse
 	json.Unmarshal(body, &accResponse)
 
-	return accResponse.Domain, nil
+	return accResponse, nil
 }

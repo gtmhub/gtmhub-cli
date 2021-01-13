@@ -64,22 +64,17 @@ func LoginAction(c *cli.Context) error {
 
 	config.SetRefreshToken(accessCodeResponse.RefreshToken)
 	config.SetToken(accessCodeResponse.AccessToken)
-	accId := getClaimFromToken(accessCodeResponse.IDToken, payloadAccountIdKey)
-	config.SetAccountId(accId)
 
-	auth0Id := getClaimFromToken(accessCodeResponse.AccessToken, "sub")
+	auth0ClientId := getClaimFromToken(accessCodeResponse.AccessToken, "sub")
 
-	domain, err := client.GetAccountDomain()
+	accountResolveResponse, err := client.ResolveAccount(auth0ClientId)
 	if err != nil {
-		return fmt.Errorf("could not resolve your account domain")
+		fmt.Println()
+		return fmt.Errorf("could not resolve your account with err: %s", err.Error())
 	}
 
-	userId, err := client.GetUserID(domain, auth0Id)
-	if err != nil {
-		return err
-	}
-
-	config.SetUserID(userId)
+	config.SetUserID(accountResolveResponse.User.ID)
+	config.SetAccountId(accountResolveResponse.Account.ID)
 
 	output.Print("Loggin successfull. Happy OKR-ing! :beer:", output.Green)
 	return nil

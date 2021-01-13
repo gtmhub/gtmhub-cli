@@ -15,19 +15,25 @@ type GtmhubHttpClient struct{
 
 }
 
-func executeRequest(url, method string, body []byte) ([]byte, error){
+func executeGlobalRequest(url, method string, body []byte) ([]byte, error) {
+	return executeRequestInternal(url, method, "", body)
+}
+
+func executeRequestInternal(url, method, accountID string, body []byte) ([]byte, error) {
 	breaker := 0
 	for {
 		if breaker > 10 {
 			return nil, fmt.Errorf("could not make request")
 		}
 		token := config.GetToken()
-		accountID := config.GetAccountId()
+
 
 		req, _ := http.NewRequest(method, url, bytes.NewReader(body))
 
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token))
-		req.Header.Add("gtmhub-accountid", accountID)
+		if len(accountID) > 0 {
+			req.Header.Add("gtmhub-accountid", accountID)
+		}
 
 		res, _ := http.DefaultClient.Do(req)
 		defer res.Body.Close()
@@ -52,4 +58,8 @@ func executeRequest(url, method string, body []byte) ([]byte, error){
 
 		return bodyResp, nil
 	}
+}
+
+func executeRequest(url, method string, body []byte) ([]byte, error){
+	return executeRequestInternal(url, method, config.GetAccountId(), body)
 }
