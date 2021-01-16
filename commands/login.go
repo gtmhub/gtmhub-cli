@@ -65,9 +65,9 @@ func LoginAction(c *cli.Context) error {
 	config.SetRefreshToken(accessCodeResponse.RefreshToken)
 	config.SetToken(accessCodeResponse.AccessToken)
 
-	auth0ClientId := getClaimFromToken(accessCodeResponse.AccessToken, "sub")
+	clientId := getClaimFromToken(accessCodeResponse.AccessToken, "sub")
 
-	accountResolveResponse, err := client.ResolveAccount(auth0ClientId)
+	accountResolveResponse, err := client.ResolveAccount(clientId)
 	if err != nil {
 		fmt.Println()
 		return fmt.Errorf("could not resolve your account with err: %s", err.Error())

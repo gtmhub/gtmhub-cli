@@ -15,7 +15,7 @@ var (
 func (c Client) RefreshToken() error {
 	refreshToken := config.GetRefreshToken()
 	payload := strings.NewReader(fmt.Sprintf("client_id=%s&grant_type=refresh_token&refresh_token=%s", c.clientId, refreshToken))
-	refreshTokenUrl := fmt.Sprintf(refreshTokenUrlFmt, c.auth0BaseUrl)
+	refreshTokenUrl := fmt.Sprintf(refreshTokenUrlFmt, c.IdentityProviderBaseUrl)
 	req, _ := http.NewRequest(http.MethodPost, refreshTokenUrl, payload)
 
 	req.Header.Add("content-type", "application/x-www-form-urlencoded")

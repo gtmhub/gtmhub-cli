@@ -12,8 +12,8 @@ var (
 	accountUrlFmt = "%s/api/v1/users/app/%s"
 )
 
-func (ghc GtmhubHttpClient) ResolveAccount(auth0UserId string) (model.AccountResolveResponse, error) {
-	accountUrl := fmt.Sprintf(accountUrlFmt, config.GetGtmhubUrl(), auth0UserId)
+func (ghc GtmhubHttpClient) ResolveAccount(clientId string) (model.AccountResolveResponse, error) {
+	accountUrl := fmt.Sprintf(accountUrlFmt, config.GetGtmhubUrl(), clientId)
 	//url := fmt.Sprintf("%s/%s",accountUrl, config.GetAccountId())
 	body, err := executeGlobalRequest(accountUrl, http.MethodGet, nil)
 	if err != nil {

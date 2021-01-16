@@ -7,7 +7,7 @@ import (
 
 var (
 	client *Client
-	dcs = map[string]DC{
+	dcs    = map[string]DC{
 		"eu": {clientID: "g3uiRNIOdckZ8uE68bRNuMCJRMQwYsdU", dcUrl: "https://auth.gtmhub.com", apiUrl: "https://app.gtmhub.com/api"},
 		"us": {clientID: "0Wg1NXn0slGzgtX4aRvdwJpiECR83HYN", dcUrl: "https://auth.us.gtmhub.com", apiUrl: "https://app.us.gtmhub.com/api"},
 	}
@@ -15,15 +15,14 @@ var (
 
 type DC struct {
 	clientID string
-	dcUrl string
-	apiUrl string
+	dcUrl    string
+	apiUrl   string
 }
 
-
-type Client struct{
-	auth0BaseUrl string
-	clientId string
-	audience string
+type Client struct {
+	IdentityProviderBaseUrl string
+	clientId                string
+	audience                string
 }
 
 func GetClient() (*Client, error) {
@@ -37,16 +36,16 @@ func GetClient() (*Client, error) {
 	return client, nil
 }
 
-func initClient(dc string) error{
+func initClient(dc string) error {
 	conf, known := dcs[dc]
 	if known == false {
 		return fmt.Errorf("uknown data center specified: %s.", dc)
 	}
 
 	client = &Client{
-		clientId: conf.clientID,
-		auth0BaseUrl: conf.dcUrl,
-		audience: conf.apiUrl,
+		clientId:                conf.clientID,
+		IdentityProviderBaseUrl: conf.dcUrl,
+		audience:                conf.apiUrl,
 	}
 
 	return nil
