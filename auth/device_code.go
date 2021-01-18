@@ -23,7 +23,7 @@ func (c *Client) PoolForToken(deviceCode DeviceFlowInitResponse) (AccessCodeResp
 			break
 		}
 		payload := strings.NewReader(fmt.Sprintf("grant_type=urn:ietf:params:oauth:grant-type:device_code&device_code=%s&client_id=%s", deviceCode.DeviceCode, c.clientId))
-		tokenUrl := fmt.Sprintf(tokenUrlFmt, c.auth0BaseUrl)
+		tokenUrl := fmt.Sprintf(tokenUrlFmt, c.IdentityProviderBaseUrl)
 		req, _ := http.NewRequest("POST", tokenUrl, payload)
 
 		req.Header.Add("content-type", "application/x-www-form-urlencoded")
@@ -54,7 +54,7 @@ func (c *Client) PoolForToken(deviceCode DeviceFlowInitResponse) (AccessCodeResp
 func (c *Client) InitAuth() (DeviceFlowInitResponse, error) {
 
 	payload := strings.NewReader(fmt.Sprintf("client_id=%s&scope=openid offline_access&audience=%s", c.clientId, c.audience))
-	deviceCodeUrl := fmt.Sprintf(deviceCodeUrlFmt, c.auth0BaseUrl)
+	deviceCodeUrl := fmt.Sprintf(deviceCodeUrlFmt, c.IdentityProviderBaseUrl)
 	req, _ := http.NewRequest("POST", deviceCodeUrl, payload)
 
 	req.Header.Add("content-type", "application/x-www-form-urlencoded")
