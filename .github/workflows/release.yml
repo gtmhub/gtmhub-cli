@@ -128,6 +128,8 @@ jobs:
 
       - name: Copy Binaries
         run: copy release\windows\gtmhub.exe build\chocolatey\tools\gtmhub.exe
+      - name: Copy License
+        run: copy LICENSE build\chocolatey\tools\LICENSE.txt
       - name: choco pack
         run: choco pack build\chocolatey\gtmhub-cli.nuspec --version ${{ github.event.inputs.version }}
       - name: push the choco pack
