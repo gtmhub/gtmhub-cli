@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>gtmhub-cli</id>
+    <version>0.1.5</version>
+    <title>Gtmhub CLI</title>
+    <authors>Gtmhub</authors>
+    <projectUrl>https://github.com/gtmhub/gtmhub-cli</projectUrl>
+    <tags>gtmhub-cli</tags>
+    <summary>A command line interface tool intended to work with gtmhub.</summary>
+    <description>no description yet</description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
