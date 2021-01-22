@@ -59,7 +59,7 @@ jobs:
           zip -r gtmhub_windows.zip release/windows
       - name: Zip up linux directory
         run: |
-          zip -r gtmhub_linux.zip release/linux
+          tar -czvf gtmhub_linux.tar.gz --directory=release/linux gtmhub
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -88,8 +88,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: gtmhub_linux.zip
-          asset_name: gtmhub_linux.zip
+          asset_path: gtmhub_linux.tar.gz
+          asset_name: gtmhub_linux.tar.gz
           asset_content_type: application/zip
       - name: Upload macos binaries Zip
         id: upload-release-asset-macos
