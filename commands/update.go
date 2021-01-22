@@ -62,7 +62,12 @@ func UpdateAction(c *cli.Context) error {
 	}
 
 	if len(id) == 0 {
-		id = getIdInteractively()
+		interactiveId, err := getIdInteractively()
+		if err != nil {
+			return err
+		}
+
+		id = interactiveId
 	}
 
 	if len(id) == 0 {
@@ -79,21 +84,26 @@ func UpdateAction(c *cli.Context) error {
 	return nil
 }
 
-func getIdInteractively() string {
+func getIdInteractively() (string, error) {
 	model := interactiveMetrics{}
 	p := tea.NewProgram(&model)
 
 	if err := p.Start(); err != nil {
 		fmt.Printf(err.Error())
 		os.Exit(1)
+
+	}
+	if model.err != nil {
+		return "", model.err
 	}
 
 	if model.cursor < 0 {
 		// no choice was made
-		return ""
+		return "", nil
 	}
+
 	metric := model.metrics[model.cursor]
 
-	return metric.ID
+	return metric.ID, nil
 }
 
