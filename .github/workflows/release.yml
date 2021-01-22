@@ -127,11 +127,11 @@ jobs:
           path: release/
 
       - name: Copy Binaries
-        run: copy release\windows\gtmhub.exe build\chocolatey\tools\gtmhub.exe
+        run: copy release\windows\gtmhub.exe distribution\chocolatey\tools\gtmhub.exe
       - name: Copy License
-        run: copy LICENSE build\chocolatey\tools\LICENSE.txt
+        run: copy LICENSE distribution\chocolatey\tools\LICENSE.txt
       - name: choco pack
-        run: choco pack build\chocolatey\gtmhub-cli.nuspec --version ${{ github.event.inputs.version }}
+        run: choco pack distribution\chocolatey\gtmhub-cli.nuspec --version ${{ github.event.inputs.version }}
       - name: push the choco pack
         run: choco push gtmhub-cli.${{github.event.inputs.version}}.nupkg --api-key ${{ secrets.CHOCO_API_KEY }} --source https://push.chocolatey.org/
   generate-release-notes:
