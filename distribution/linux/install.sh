@@ -22,8 +22,14 @@ downloadZip() {
 
 }
 
+cleanup() {
+  if [[ -d "${GTMHUB_TMP_ROOT:-}" ]]; then
+    rm -rf "$GTMHUB_TMP_ROOT"
+  fi
+}
+
 installFile() {
-  GTMHUB_TMP="GTMHUB_TMP_ROOT/$BINARY_NAME"
+  GTMHUB_TMP="$GTMHUB_TMP_ROOT/$BINARY_NAME"
   mkdir -p "$GTMHUB_TMP"
   tar xf "$GTMHUB_TMP_FILE" -C "$GTMHUB_TMP"
   GTMHUB_TMP_BIN="$GTMHUB_TMP/gtmhub"
@@ -35,3 +41,4 @@ installFile() {
 
 downloadZip
 installFile
+cleanup

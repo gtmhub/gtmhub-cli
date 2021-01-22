@@ -17,6 +17,7 @@ choco install gtmhub-cli
 ```
 ### Linux
 ```bash
+curl https://github.com/gtmhub/gtmhub-cli/blob/master/distribution/linux/install.sh | bash
 ```
 
 # Usage
