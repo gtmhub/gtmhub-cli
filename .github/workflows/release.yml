@@ -59,7 +59,7 @@ jobs:
           zip -r gtmhub_windows.zip release/windows
       - name: Zip up linux directory
         run: |
-          zip -r gtmhub_linux.zip release/linux
+          tar -czvf gtmhub_linux.tar.gz --directory=release/linux gtmhub
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -88,8 +88,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: gtmhub_linux.zip
-          asset_name: gtmhub_linux.zip
+          asset_path: gtmhub_linux.tar.gz
+          asset_name: gtmhub_linux.tar.gz
           asset_content_type: application/zip
       - name: Upload macos binaries Zip
         id: upload-release-asset-macos
@@ -127,11 +127,11 @@ jobs:
           path: release/
 
       - name: Copy Binaries
-        run: copy release\windows\gtmhub.exe build\chocolatey\tools\gtmhub.exe
+        run: copy release\windows\gtmhub.exe distribution\chocolatey\tools\gtmhub.exe
       - name: Copy License
-        run: copy LICENSE build\chocolatey\tools\LICENSE.txt
+        run: copy LICENSE distribution\chocolatey\tools\LICENSE.txt
       - name: choco pack
-        run: choco pack build\chocolatey\gtmhub-cli.nuspec --version ${{ github.event.inputs.version }}
+        run: choco pack distribution\chocolatey\gtmhub-cli.nuspec --version ${{ github.event.inputs.version }}
       - name: push the choco pack
         run: choco push gtmhub-cli.${{github.event.inputs.version}}.nupkg --api-key ${{ secrets.CHOCO_API_KEY }} --source https://push.chocolatey.org/
   generate-release-notes:
