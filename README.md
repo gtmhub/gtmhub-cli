@@ -25,6 +25,12 @@ curl https://raw.githubusercontent.com/gtmhub/gtmhub-cli/master/distribution/lin
  gtmhub [command] [subcommand] {parameters}
 ```
 
+## Login
+Use the login command to authenticate. As Gtmhub supports multiple data centers you will need to login against the correct data centre. The default one is EU. In case your account is located in Gtmhub's US data centre use the dc flag and pass the value for us.
+```
+gtmhub login --dc us
+```
+
 ### supported commands 
 1. login - authorizes the tool to access your gtmhub instance and perform actions on your behalf.
 2. logout - removes the integration with your account
