@@ -22,6 +22,22 @@ func PrintMetrics(metrics model.Metrics) {
 	t.Render()
 }
 
+func GetMetricSelectionTable(metrics model.Metrics, cursor int) string {
+	t := table.NewWriter()
+	//t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"✓", "ID", "Name", "Attainment", "Days since last checkin"})
+	for i, metric := range metrics {
+		selector := " "
+		if cursor == i {
+			selector = "> "
+		}
+		t.AppendRows([]table.Row{
+			{selector, metric.ID, metric.Name, fmt.Sprintf("%v / %v", metric.Actual, metric.Target), GetDaysText(metric.LastCheckin)},
+		})
+	}
+	return t.Render()
+}
+
 func PrintMetricUpdated() {
 	fmt.Println(Red, "Sweet! Your metric has just been updated. Keep going!")
 }

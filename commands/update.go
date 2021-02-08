@@ -2,11 +2,13 @@ package commands
 
 import (
 	"fmt"
-	"gtmhub-cli/input"
 	"gtmhub-cli/model"
 	"gtmhub-cli/output"
-	"os"
+	"strconv"
 	"time"
+
+	//"gtmhub-cli/output"
+	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/urfave/cli/v2"
@@ -43,38 +45,33 @@ var (
 func UpdateAction(c *cli.Context) error {
 	now := time.Now()
 	id := c.String("id")
-	value := c.Float64("value")
+	var value *float64
+	if c.IsSet("value") {
+		inputValue := c.Float64("value")
+		value = &inputValue
+	}
 	comment := c.String("comment")
 
-	req := model.CheckInMetricRequest{
-		Actual:      value,
-		CheckInDate: &now,
-		Comment:     comment,
+	interactiveId, valueFromInteractive, commentFromInteractive, err := getIdInteractively(value, comment, id)
+	if err != nil {
+		return err
 	}
 
-	if c.IsSet("value") == false {
-		val, err := input.GetFloat("You should provide a value for your update: ")
-		if err != nil {
-			return err
-		}
-
-		req.Actual = val
-	}
-
-	if len(id) == 0 {
-		interactiveId, err := getIdInteractively()
-		if err != nil {
-			return err
-		}
-
-		id = interactiveId
-	}
+	id = interactiveId
+	value = valueFromInteractive
+	comment = commentFromInteractive
 
 	if len(id) == 0 {
 		return fmt.Errorf("no id provided with the --id option and non selected from the list")
 	}
 
-	err := client.UpdateMetric(req, id)
+	req := model.CheckInMetricRequest{
+		Actual:      *value,
+		CheckInDate: &now,
+		Comment:     comment,
+	}
+
+	err = client.UpdateMetric(req, id)
 	if err != nil {
 		return err
 	}
@@ -84,8 +81,11 @@ func UpdateAction(c *cli.Context) error {
 	return nil
 }
 
-func getIdInteractively() (string, error) {
-	model := interactiveMetrics{}
+func getIdInteractively(value *float64, comment, metricID string) (string, *float64, string, error) {
+	if value != nil && len(metricID) > 0 && len(comment) > 0 {
+		return metricID, value, comment, nil
+	}
+	model := GetInteractiveMetricsModel(value, comment, metricID)
 	p := tea.NewProgram(&model)
 
 	if err := p.Start(); err != nil {
@@ -94,16 +94,23 @@ func getIdInteractively() (string, error) {
 
 	}
 	if model.err != nil {
-		return "", model.err
+		return "", value, "", model.err
 	}
 
 	if model.cursor < 0 {
 		// no choice was made
-		return "", nil
+		return "", value, comment, nil
 	}
 
-	metric := model.metrics[model.cursor]
+	valueEntered := model.valueInput.Value()
+	parsed, err := getFloat(valueEntered)
+	if err != nil {
+		return "", value, comment, err
+	}
 
-	return metric.ID, nil
+	return model.metricID, &parsed, model.commentInput.Value(), nil
 }
 
+func getFloat(entered string) (float64, error) {
+	return strconv.ParseFloat(entered, 64)
+}
